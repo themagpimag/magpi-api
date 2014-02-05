@@ -1,0 +1,5 @@
+backends:
+- name: syncbackend
+  class: B2
+  instances: 1
+  options: dynamic

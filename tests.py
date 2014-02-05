@@ -22,10 +22,11 @@ class TestMagpiApi():
         }
         expected = {
             "id": 20, 
+            "id_issuu":"issue20final",
             "pdf_url": "http:\/\/www.themagpi.com\/issue\/issue-20\/pdf",
             "image_url": "http:\/\/www.themagpi.com\/assets\/20.jpg",
             "date": "February 3, 2014", 
-            "content": "Welcome"
+            "content": "Welcome",
         }
         issue = Issue()
         issue.fill_from_old(old_issue)
@@ -47,7 +48,8 @@ class TestMagpiApi():
 
     def test_maximize_issue(self):
         expected = {
-            "id": 19, 
+            "id": 19,
+            "id_issuu":"issuu19final",
             "pdf_url": "https://issuee",
             "image_url": "https://issuee.jpg",
             "date": "Feb 2013", 
@@ -55,6 +57,7 @@ class TestMagpiApi():
         }
         issue = Issue()
         issue.id = 19
+        issue.id_issuu = "issuu19final"
         issue.date = "Feb 2013"
         issue.pdf_url = "https://issuee"
         issue.image_url = "https://issuee.jpg" 
@@ -86,5 +89,5 @@ class TestMagpiApi():
         }
         mock_get_issue_from_db.return_value = expected
         rv = self.app.get('/issues/19')
-        mock_get_issue_from_db.assert_called_once_with('19')
+        mock_get_issue_from_db.assert_called_once_with(19)
         assert_equal(json.loads(rv.data), expected)

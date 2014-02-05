@@ -1,0 +1,27 @@
+application: themagpiapi
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: false
+
+default_expiration: "5d"
+
+builtins:
+- appstats: on
+- admin_redirect: on
+- deferred: on
+- remote_api: on
+
+libraries:
+- name: jinja2
+  version: "2.6"
+- name: markupsafe
+  version: "0.15"
+
+inbound_services:
+- warmup
+
+handlers:
+
+- url: /.*
+  script: app.app

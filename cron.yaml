@@ -1,0 +1,5 @@
+cron:
+- description: sync issues
+  url: /sync_issues
+  target: syncbackend
+  schedule: every 10 hours
