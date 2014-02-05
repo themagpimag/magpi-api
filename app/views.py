@@ -18,7 +18,7 @@ def get_issue(id):
 
 @app.route('/issues')
 def get_issues():
-    issues_list = get_issues_list_from_db(flask.request.args.get('next_token'))
+    issues_list = get_issues_list_from_db(flask.request.args.get('pagetoken'))
     if issues_list:
         return flask.jsonify( issues_list ), 200
     else:
@@ -32,11 +32,11 @@ def get_issue_from_db(issue):
 
 def get_issues_list_from_db(token):
     curs = Cursor(urlsafe=token)
-    issues, curs, _ = Issue.query().fetch_page(10, start_cursor=curs)
+    issues, curs, _ = Issue.query().order(-Issue.id).fetch_page(10, start_cursor=curs)
     if issues:
         issues_list = {}
         if curs:
-            issues_list['next_token'] = curs.urlsafe()
+            issues_list['pagetoken'] = curs.urlsafe()
         issues_list['issues'] = []
         for issue in issues:
             issues_list['issues'].append(issue.minimize())
