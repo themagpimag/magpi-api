@@ -6,6 +6,9 @@ from google.appengine.datastore.datastore_query import Cursor
 
 @app.route('/issues/<id>')
 def get_issue(id):
+    if not id.isdigit():
+        return flask.jsonify( 
+            { 'error' : 'bad parameter, an integer is required' } ) , 400
     id = int(id)
     issue = get_issue_from_db(id)
     if issue:
