@@ -2,14 +2,15 @@ import app
 import mock
 import json
 from nose.tools import assert_equal
-from app.issue import Issue
+from app.models.issue import Issue
+from app.models.news import News
 
 class TestMagpiApi():
 
     def setUp(self):
         self.app = app.app.test_client()
 
-    def test_conversion_from_original(self):
+    def test_issue_conversion_from_original(self):
         old_issue = {
             "id":848,
             "title":"20",
@@ -31,6 +32,21 @@ class TestMagpiApi():
         issue = Issue()
         issue.fill_from_old(old_issue)
         assert_equal(issue.maximize(), expected)
+
+    def test_news_conversion_from_original(self):
+        old_news = {
+            "title": "Title",
+            "published" : "Date",
+            "summary" : "My summary",
+        }
+        expected = {
+            "title": "Title",
+            "date" : "Date",
+            "content" : "My summary",
+        }
+        news = News()
+        news.fill_from_old(old_news)
+        assert_equal(news.maximize(), expected)
 
     def test_minimize_issue(self):
         expected = {
@@ -90,4 +106,20 @@ class TestMagpiApi():
         mock_get_issue_from_db.return_value = expected
         rv = self.app.get('/issues/19')
         mock_get_issue_from_db.assert_called_once_with(19)
+        assert_equal(json.loads(rv.data), expected)
+
+    @mock.patch('app.views.get_news_list_from_db')
+    def test_get_list_news(self, mock_get_news_list_from_db):
+        expected = {'news':[{
+            "date": "25 Feb 2011", 
+            "title": "MagPi 20 released", 
+            "content": "Bla bla bla", 
+        },{
+            "date": "28 Feb 2011", 
+            "title": "MagPi 21 released", 
+            "content": "Bla bla bla", 
+        }]}
+        mock_get_news_list_from_db.return_value = expected
+        rv = self.app.get('/news')
+        mock_get_news_list_from_db.assert_called_once()
         assert_equal(json.loads(rv.data), expected)

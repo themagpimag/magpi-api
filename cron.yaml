@@ -3,3 +3,8 @@ cron:
   url: /sync_issues
   target: syncbackend
   schedule: every 20 hours
+
+- description: sync news
+  url: /sync_news
+  target: syncbackend
+  schedule: every 10 hours
