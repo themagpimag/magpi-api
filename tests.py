@@ -36,12 +36,12 @@ class TestMagpiApi():
     def test_news_conversion_from_original(self):
         old_news = {
             "title": "Title",
-            "published" : "Date",
+            "published" : "Tue, 04 Feb 2014 12:29:32 PST",
             "summary" : "My summary",
         }
         expected = {
             "title": "Title",
-            "date" : "Date",
+            "date" : "2014-02-04 12:29:32",
             "content" : "My summary",
         }
         news = News()
